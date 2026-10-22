@@ -2,9 +2,9 @@
 
 A ~10-minute sequence that runs the whole platform on the open-source **HiGHS**
 solver — **no commercial licence** — on the small synthetic Timor case
-(`timor_demo`, 4 villages, 2 zones). It is the demonstration to run for a
-funder's technical partners before any wider commitment: every step below was
-executed on a laptop and the runtimes are what was observed.
+(`timor_demo`, 4 villages, 2 zones). It is the quickest end-to-end tour of the
+platform: every step below was executed on a laptop and the runtimes are what
+was observed.
 
 > Gurobi is **not** needed for anything here. It is an optional fast path for the
 > exact unit-commitment MILP at full scale, which belongs on an HPC — see the

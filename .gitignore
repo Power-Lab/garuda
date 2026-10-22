@@ -28,7 +28,7 @@ CHANGES.md
 # Cached province GeoJSON (fetched on demand by the plot scripts)
 tools/idn_prov.json
 
-# Local partner/funder draft (kept local, like capability_note.md)
+# Local notes (kept local, not tracked)
 concept_note.md
 
 # Sensitivity-sweep dataset variants (derived from the base by tools/sensitivity.py)
@@ -46,5 +46,5 @@ usable_land_ntt/
 *.sbn
 *.sbx
 
-# HPC handoff brief (generated locally to copy to the cluster agent)
+# HPC handoff note (kept local, not tracked)
 hpc_handoff.md

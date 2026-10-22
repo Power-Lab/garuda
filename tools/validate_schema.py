@@ -137,7 +137,7 @@ def validate_dataset(folder: str):
     # ---- RE-flag consistency (warnings) ---------------------------------
     # The RE flag feeds the RE-share floor and the reported Grid_REShare. Two
     # inconsistency patterns have occurred in real data: fossil-fuelled units
-    # flagged RE=1 (inflates the share — the maluku a0cf7d5 class), and
+    # flagged RE=1 (inflates the share — the maluku 148bd51 class), and
     # renewable technologies left at RE=0 (deflates it, against the datasets'
     # own convention of flagging hydro/geothermal/bio/waste as RE).
     RENEWABLE_TECHS = ("solar", "wind", "hydro", "geothermal", "biomass",
