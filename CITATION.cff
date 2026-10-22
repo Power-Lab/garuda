@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Garuda: Grid And Renewable Utilization & Deployment Analysis"
+abstract: >-
+  A sub-national, open-source energy-transition platform for Indonesia: a zonal
+  capacity-expansion and operational model in Julia (JuMP) with a Python tooling
+  layer, resolving the power system from islands to grid zones to individual
+  village and industrial sites, and running end-to-end on the open-source HiGHS
+  solver.
+type: software
+license: MIT
+repository-code: "https://github.com/Power-Lab/garuda"
+authors:
+  - family-names: Gnapathy
+    given-names: "Kaarthigeswaran A"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"
+  - name: "Power Transformation Lab"
+keywords:
+  - energy systems modeling
+  - capacity expansion
+  - optimization
+  - unit commitment
+  - Indonesia
+references:
+  - type: software
+    title: "village-indonesia-100gw"
+    repository-code: "https://github.com/Power-Lab/village-indonesia-100gw"
+    authors:
+      - name: "Power Transformation Lab"

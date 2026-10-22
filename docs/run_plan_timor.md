@@ -25,7 +25,7 @@ Nothing in B–D is interpretable until these pass.
 Reproduces the pre-port reference number, confirming the model is the same one
 that produced the published EXP-001..005 results.
 
-**This must be run at commit `f3d054b^`, not on `main`.** `f3d054b` priced village
+**This must be run at commit `33bf3c9^`, not on `main`.** `33bf3c9` priced village
 battery power (`Inv_Cost_per_MWyr` 0 → 30001), which deliberately moves every
 Timor number. On current `main` this run will **not** reproduce 64.63141317, and
 that is correct behaviour, not a failure.
@@ -92,7 +92,7 @@ python tools/sensitivity.py run --island timor --year 2030 --scenario gridvillag
 ### A4 — measure village emissions *(prerequisite for group D)*
 
 The shipped `co2_limits` of 3,000,000 t is roughly **40× slack** against actual
-village emissions, so a cap set from it cannot bind (N4). Until `f3d054b`'s
+village emissions, so a cap set from it cannot bind (N4). Until `33bf3c9`'s
 sibling fix landed, `CO2_Emissions_Village` also reported a hard **0**, so this
 number could not be measured at all. It can now.
 

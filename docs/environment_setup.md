@@ -84,7 +84,7 @@ The model is a MILP (binary unit commitment), solved with Gurobi by default.
 |--------|-----|-------|
 | **Academic Named-User** | University staff/students (UCSD side) | Free; per-machine; renew yearly; requires campus network or VPN to issue |
 | **Academic WLS** | Academic teams, cloud/HPC | Free; floating web licence, works in containers |
-| **Commercial / NGO** | IESR if no academic affiliation applies | Gurobi has NGO programs — contact sales early; this is a Phase-2 handoff risk |
+| **Commercial / NGO** | Partner organisations without an academic affiliation | Gurobi has NGO programs — contact sales early |
 | **Size-limited free** | Anyone | Bundled with `Gurobi.jl`; too small for these models (Maluku base ≈ 290k constraints) — preflight will pass licence check only with a real licence |
 
 Setup: install Gurobi or let `Gurobi.jl` fetch it, place `gurobi.lic` in the
@@ -94,7 +94,7 @@ the licence before you discover a problem mid-batch.
 
 ### Open-source solver fallback (assessment)
 
-For the promised open-access toolkit, the realistic fallback is
+For a fully open-access toolkit, the realistic fallback is
 [HiGHS](https://highs.dev) (`HiGHS.jl`). Scope of the change:
 
 - `Model(Gurobi.Optimizer)` and the attribute names (`MIPGap`, `TimeLimit`,

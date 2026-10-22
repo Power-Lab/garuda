@@ -1,6 +1,6 @@
 # Garuda — Grid And Renewable Utilization & Deployment Analysis
 
-[![ci](https://github.com/kaarthi19/garuda/actions/workflows/ci.yml/badge.svg)](https://github.com/kaarthi19/garuda/actions/workflows/ci.yml)
+[![ci](https://github.com/Power-Lab/garuda/actions/workflows/ci.yml/badge.svg)](https://github.com/Power-Lab/garuda/actions/workflows/ci.yml)
 
 **A sub-national, open-source energy-transition platform for Indonesia.**
 
@@ -240,4 +240,5 @@ Transformation Lab, with a Timor / Nusa Tenggara Timur case study) into a
 multi-engine, sub-national zonal platform.
 
 Released under the **MIT Licence** — see [`LICENSE`](LICENSE). Contributions
-welcome via issues and pull requests.
+welcome via issues and pull requests — see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+To cite Garuda, use [`CITATION.cff`](CITATION.cff).

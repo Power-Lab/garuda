@@ -2,7 +2,7 @@
 
 Builds a minimal valid dataset in tmp_path and checks the two warning
 directions: a fossil-fuelled unit flagged RE=1 (inflates the RE share — the
-maluku a0cf7d5 class) and a renewable technology left at RE=0 (deflates it).
+maluku 148bd51 class) and a renewable technology left at RE=0 (deflates it).
 Solver-free; runs in CI.
 """
 import os
