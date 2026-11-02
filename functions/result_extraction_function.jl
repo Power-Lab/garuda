@@ -202,7 +202,7 @@ function result_extraction(
         ID           = inputs.L,
         Path         = inputs.lines.path_name[inputs.L],
         Net_Flow_MWh = [annualise(FLOWv[:, l].data) for l in inputs.L],
-        Peak_Flow_MW = [maximum(FLOWv[:, l].data) for l in inputs.L],
+        Peak_Flow_MW = [maximum(abs.(FLOWv[:, l].data)) for l in inputs.L],   # either direction
     )
 
     num_s = maximum(inputs.S)
