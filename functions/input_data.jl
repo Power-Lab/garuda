@@ -13,8 +13,13 @@ function input_data(filepath)
     #ID for all generators for easy reference
     G = generators.R_ID;
 
-    #set of zones
-    Z = convert(Array{Int64}, unique(collect(skipmissing(generators.Zone))));
+    #set of zones, in zone-number order. demand[t,z] is indexed by column POSITION
+    #(demand is `select`ed below in the order of Z), so Z must be exactly 1..NZ in
+    #ascending order. First-appearance order (the old `unique` alone) paired jawa_bali's
+    #zones 5/6/7 with each other's load, since its generators list zones 1,2,3,4,6,7,5.
+    Z = sort(convert(Array{Int64}, unique(collect(skipmissing(generators.Zone)))));
+    Z == 1:length(Z) || error("generators.csv zones must be 1..N with no gaps " *
+        "(demand.csv is indexed by position); found $Z")
 
     #human-readable zone names from the optional zones.csv (previously unread);
     #maps zone integer -> name for readable reports and named buses on export.
@@ -149,8 +154,12 @@ function input_data(filepath)
         )
     end
 
-    #ID for all villages for easy reference
-    VIL = convert(Array{Int64}, unique(collect(skipmissing(village_generators.Village))));
+    #ID for all villages for easy reference, in id order: village_demand[t,vil] and
+    #village_demandheat[t,vil] are indexed by column POSITION (selected below in the
+    #order of VIL), so the ids must be exactly 1..NV ascending, as for the zones Z
+    VIL = sort(convert(Array{Int64}, unique(collect(skipmissing(village_generators.Village)))));
+    VIL == 1:length(VIL) || error("site ids must be 1..N with no gaps " *
+        "(site demand is indexed by position); found $(length(VIL)) sites, ids $(extrema(VIL))")
 
     #village generators set
     VIL_G = village_generators.R_ID;

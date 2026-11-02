@@ -63,5 +63,27 @@ let sys = build_system(data("2030", "sulawesi"))
     check(isempty(build_system(data("2030", "timor_demo")).zone_names), "timor_demo has empty zone_names")
 end
 
+println("[D] positional demand lines up with zone and site ids")
+# demand[t,z] and village_demand[t,vil] are indexed by position. jawa_bali lists its
+# generator zones as 1,2,3,4,6,7,5; with first-appearance order, column 5 was demand_z6.
+for (yr, isl) in (("2030", "jawa_bali"), ("2035", "jawa_bali"), ("2030", "kalimantan"))
+    p   = data(yr, isl)
+    nt  = input_data(p)
+    raw = DataFrame(CSV.File(joinpath(p, "demand.csv")))
+    check(nt.Z == 1:length(nt.Z), "$yr/$isl Z is 1..$(length(nt.Z)) ascending")
+    check(all(nt.demand[:, z] == raw[!, Symbol("demand_z$z")] for z in nt.Z),
+          "$yr/$isl demand column z is demand_z\$z for every zone")
+    vraw = DataFrame(CSV.File(resolve_site_csv(p, "demand")))
+    check(all(nt.village_demand[:, v] == vraw[!, site_demand_col(vraw, v)] for v in nt.VIL),
+          "$yr/$isl site demand column v is site v's demand for all $(length(nt.VIL)) sites")
+end
+let src = data("2030", "timor_demo"), dst = mktempdir()
+    for f in readdir(src); cp(joinpath(src, f), joinpath(dst, f)); end
+    g = DataFrame(CSV.File(joinpath(src, "generators.csv"))); g.Zone[g.Zone .== 2] .= 3
+    CSV.write(joinpath(dst, "generators.csv"), g)
+    check(try input_data(dst); false catch e; occursin("no gaps", sprint(showerror, e)) end,
+          "a zone gap (1,3) is refused, not silently mis-indexed")
+end
+
 println(fails == 0 ? "\nDATA_CORE_OK: all checks passed" : "\nDATA_CORE_FAIL: $fails check(s) failed")
 exit(fails == 0 ? 0 : 1)

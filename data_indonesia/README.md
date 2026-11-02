@@ -35,6 +35,10 @@ check a folder before attempting a full solve.
 - **Zones** are integers `1..NZ`. The `Zone` column in `generators.csv`, the
   `demand_z<i>` columns in `demand.csv`, and the `z<i>` columns in `network.csv`
   must all use the same numbering. Single-zone islands use `1` everywhere.
+  Every zone `1..NZ` must appear in `generators.csv`, in any row order: the
+  loader sorts the zones and reads `demand[t,z]` by column position, so it
+  refuses a gap. (Before the sort, first-appearance order silently gave
+  jawa_bali's zones 5, 6 and 7 one another's demand.)
 - **Sites** (the platform's canonical term for a decentralised node within a
   zone) are integers `1..NV` in the `Site` column of `site_generators.csv`,
   matching the `demand_site<i>` columns in `site_demand.csv` and
@@ -42,7 +46,9 @@ check a folder before attempting a full solve.
   inherited spellings **`village_*` / `Village` / `demand_village<i>`** (the
   100 GW village-solar study) and **`ip_*` / `Industrial_Park` / `demand_ip<i>`**
   (the captive-industrial study) — use one spelling consistently per dataset.
-  Resolution lives in `functions/site_aliases.jl`.
+  Resolution lives in `functions/site_aliases.jl`. Site demand is also read by
+  column position, so the ids must be exactly `1..NV` with no gaps; the loader
+  sorts them and refuses a gap.
 - **R_ID** must be consecutive integers starting at 1, in file row order. R_IDs
   are used directly as array indices throughout the model.
 - **Time** is modelled as representative periods (currently 8 representative weeks
@@ -176,7 +182,7 @@ Same structure and semantics as `generators.csv`, with one extra key column:
 | Column | Meaning |
 |--------|---------|
 | `Village` | Integer ID of the village (or village cluster) the unit belongs to, 1..NV. Matches `demand_village<i>` columns. |
-| `Zone` | Grid zone the village sits in — used to assign grid imports to the right zone bus in `gridvillage` runs. |
+| `Zone` | Grid zone the village sits in — used to assign grid imports to the right zone bus in `gridvillage` runs. The bus is the `Zone` of the site's **first listed** row, so list a park's `coal_captive` units first (a park battery row may carry another zone; `tests/test_zone_site_ids.py` checks this). |
 
 Columns read by the model: `R_ID`, `Zone`, `Village`, `Resource`, `technology`,
 `Existing_Cap_MW`, `Existing_Cap_MWh`, `New_Build`, `Inv_Cost_per_MWyr`,
