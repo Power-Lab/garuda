@@ -24,6 +24,5 @@ keywords:
 references:
   - type: software
     title: "village-indonesia-100gw"
-    repository-code: "https://github.com/Power-Lab/village-indonesia-100gw"
     authors:
       - name: "Power Transformation Lab"
