@@ -26,10 +26,9 @@
   `generate_jobs.py` and `generate_jobs_local.py`.
 - Do not commit run outputs (`results/`, `jobs/`), logs, `.DS_Store`,
   `__pycache__/` or large GIS layers.
-- Input CSVs under `data_indonesia/` that overlap
-  [Power-Lab/data-indonesia-2025](https://github.com/Power-Lab/data-indonesia-2025)
-  must stay byte-identical: do not let an editor or formatter rewrite their
-  whitespace or line endings.
+- Data-file edits are made by a script, change only the fields they mean to
+  (do not let an editor or formatter rewrite whitespace or line endings), and
+  add a row to the modification log in `data_indonesia/DATA_PROVENANCE.md`.
 - `data_indonesia/captive/LICENSE` is the upstream notice for vendored data;
   keep it.
 

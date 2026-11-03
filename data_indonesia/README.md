@@ -35,6 +35,10 @@ check a folder before attempting a full solve.
 - **Zones** are integers `1..NZ`. The `Zone` column in `generators.csv`, the
   `demand_z<i>` columns in `demand.csv`, and the `z<i>` columns in `network.csv`
   must all use the same numbering. Single-zone islands use `1` everywhere.
+  Every zone `1..NZ` must appear in `generators.csv`, in any row order: the
+  loader sorts the zones and reads `demand[t,z]` by column position, so it
+  refuses a gap. (Before the sort, first-appearance order silently gave
+  jawa_bali's zones 5, 6 and 7 one another's demand.)
 - **Sites** (the platform's canonical term for a decentralised node within a
   zone) are integers `1..NV` in the `Site` column of `site_generators.csv`,
   matching the `demand_site<i>` columns in `site_demand.csv` and
@@ -42,7 +46,9 @@ check a folder before attempting a full solve.
   inherited spellings **`village_*` / `Village` / `demand_village<i>`** (the
   100 GW village-solar study) and **`ip_*` / `Industrial_Park` / `demand_ip<i>`**
   (the captive-industrial study) — use one spelling consistently per dataset.
-  Resolution lives in `functions/site_aliases.jl`.
+  Resolution lives in `functions/site_aliases.jl`. Site demand is also read by
+  column position, so the ids must be exactly `1..NV` with no gaps; the loader
+  sorts them and refuses a gap.
 - **R_ID** must be consecutive integers starting at 1, in file row order. R_IDs
   are used directly as array indices throughout the model.
 - **Time** is modelled as representative periods (currently 8 representative weeks
@@ -77,8 +83,8 @@ Columns the model reads:
 | `Fixed_OM_Cost_per_MWhyr` | $/MWh-yr | Fixed O&M on storage energy capacity. |
 | `Var_OM_Cost_per_MWh` | $/MWh | Variable O&M (fuel cost is added automatically from `fuels_data.csv` × heat rate). |
 | `Min_Power_MW` | **fraction 0–1** | Minimum stable output as a *fraction of capacity* — despite the `_MW` suffix it is not in MW. |
-| `Ramp_Up_Percentage` / `Ramp_Dn_Percentage` | fraction/h | Ramp limits as a fraction of capacity per hour. |
-| `Commit` | 0/1 | `1` = thermal unit with binary commitment (start/stop/min-up/min-down); `0` = economic dispatch (VRE, hydro, storage). |
+| `Ramp_Up_Percentage` / `Ramp_Dn_Percentage` | fraction/h | Ramp limits as a fraction of capacity per hour. `1` is equivalent to no limit (output is already bounded by capacity). Equal zeros mean a must-run baseload pinned to a constant. **Ignored on `STOR` rows** — storage is exempt from the ramp constraints (see MODEL.md), which is why every shipped battery row can carry a meaningless `0`/`1` pair. `Ramp_Up = 0` with `Ramp_Dn > 0` on a non-storage row is rejected by `validate_schema.py`: the unit could never increase output. |
+| `Commit` | 0/1/2 | `1` = thermal unit with binary commitment (start/stop/min-up/min-down); anything else = economic dispatch (VRE, hydro, storage). `2` is a shipped sentinel meaning "battery candidate" and dispatches exactly like `0`. The loader partitions on `Commit == 1` vs the complement, so an unrecognised value is dispatched rather than dropped — `validate_schema.py` warns on any value outside `{0,1,2}`. |
 | `Start_Cost_per_MW` | $/MW-start | Start-up O&M cost. |
 | `Start_Fuel_MMBTU_per_MW` | MMBtu/MW-start | Start-up fuel use. |
 | `Heat_Rate_MMBTU_per_MWh` | MMBtu/MWh | Heat rate; multiplied by fuel cost and CO₂ content. |
@@ -176,7 +182,7 @@ Same structure and semantics as `generators.csv`, with one extra key column:
 | Column | Meaning |
 |--------|---------|
 | `Village` | Integer ID of the village (or village cluster) the unit belongs to, 1..NV. Matches `demand_village<i>` columns. |
-| `Zone` | Grid zone the village sits in — used to assign grid imports to the right zone bus in `gridvillage` runs. |
+| `Zone` | Grid zone the village sits in — used to assign grid imports to the right zone bus in `gridvillage` runs. The bus is the `Zone` of the site's **first listed** row, so list a park's `coal_captive` units first (a park battery row may carry another zone; `tests/test_zone_site_ids.py` checks this). |
 
 Columns read by the model: `R_ID`, `Zone`, `Village`, `Resource`, `technology`,
 `Existing_Cap_MW`, `Existing_Cap_MWh`, `New_Build`, `Inv_Cost_per_MWyr`,

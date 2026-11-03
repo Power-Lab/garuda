@@ -8,6 +8,7 @@ import os
 import sys
 
 import pandas as pd
+import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -114,7 +115,8 @@ def test_make_variant_copies_and_tags(tmp_path):
     assert variant == "demo__fuel1.2"
     vf = pd.read_csv(os.path.join(root, "2030", variant, "fuels_data.csv"))
     bf = pd.read_csv(os.path.join(base, "fuels_data.csv"))
-    assert float(vf.loc[1, "Cost_per_MMBtu"]) == 21.6
+    # 18 x 1.2 is 21.599999999999998 in binary; pandas >= 3.1 round-trips it through the CSV as such
+    assert float(vf.loc[1, "Cost_per_MMBtu"]) == pytest.approx(21.6)
     assert float(bf.loc[1, "Cost_per_MMBtu"]) == 18.0   # base untouched
 
 

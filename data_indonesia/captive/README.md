@@ -8,7 +8,10 @@ in `../<year>/<island>/`: same interconnected grid, a different decentralised
 ## Provenance
 
 Vendored from **[Power-Lab/data-indonesia-2025](https://github.com/Power-Lab/data-indonesia-2025)**
-(MIT, see `LICENSE`), the data release for the **captive-indonesia-2025** study:
+(MIT, see `LICENSE`), the data release for the **captive-indonesia-2025** study.
+The investment costs have since been annualised here, as in that study's own
+model repository (see `../DATA_PROVENANCE.md`), so these files no longer match the
+release byte for byte:
 
 - Model code: <https://github.com/Power-Lab/captive-indonesia-2025>
 - Report: <https://zenodo.org/records/17345968>
